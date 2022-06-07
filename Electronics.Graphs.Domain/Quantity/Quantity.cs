@@ -151,7 +151,7 @@
         /// <exception cref="QuantityNotSameUnitsException">Quantities has not compatible units</exception>
         internal static void ThrowIfUnitsNotCompatible(Quantity quantityA, Quantity quantityB)
         {
-            if (quantityA.IsUnitCompatible(quantityB))
+            if (!quantityA.IsUnitCompatible(quantityB))
                 throw new QuantityNotSameUnitsException();
         }
 
