@@ -1,79 +1,75 @@
-using Electronics.Graphs.Domain.Quantity;
+﻿using Electronics.Graphs.Domain.Quantity;
 using NUnit.Framework;
 
-namespace Electronics.Graphs.Domain.UnitTests
+namespace Electronics.Graphs.Domain.UnitTests;
+
+public class QuantityUnitTest
 {
-    public class QuantityUnitTest
+    [Test]
+    public void Should_Has_QuantityUnitName()
     {
-        [SetUp]
-        public void Setup()
+        QuantityUnit unit = QuantityUnit.Ampere;
+        Assert.AreEqual("A", unit.QuantityUnitName);
+    }
+
+    [Test]
+    public void Should_Be_TwoQuantitiesWithSameName()
+    {
+        QuantityUnit unitA = QuantityUnit.Ampere;
+        QuantityUnit unitB = QuantityUnit.Ampere;
+        
+        Assert.AreEqual(unitA, unitB);
+    }
+
+    [Test]
+    public void Should_Be_DifferentTwoQuantitiesWithDifferentName()
+    {
+        QuantityUnit unitA = QuantityUnit.Ampere;
+        QuantityUnit unitB = QuantityUnit.Ohm;
+        
+        Assert.AreNotEqual(unitA, unitB);
+    }
+
+    [Test]
+    public void Should_ReturnTrue_IfCompatible()
+    {
+        QuantityUnit unitA = QuantityUnit.Ampere;
+        QuantityUnit unitB = QuantityUnit.Ampere;
+
+        Assert.True(unitA.CheckCompatibility(unitB));
+    }
+    
+    [Test]
+    public void Should_ReturnSameUnitAsPassed_IfUnitsWereAdded()
+    {
+        QuantityUnit unitA = QuantityUnit.Volt;
+        QuantityUnit unitB = QuantityUnit.Volt;
+
+        QuantityUnit expectedUnit = QuantityUnit.Volt;
+
+        Assert.AreEqual(expectedUnit, unitA + unitB);
+    }
+
+    [Test]
+    public void Should_ReturnSameUnitAsPassed_IfUnitsWereSubtracted()
+    {
+        QuantityUnit unitA = QuantityUnit.Ampere;
+        QuantityUnit unitB = QuantityUnit.Ampere;
+        
+        QuantityUnit expectedUnit = QuantityUnit.Ampere;
+
+        Assert.AreEqual(expectedUnit, unitB - unitA);
+    }
+
+    [Test]
+    public void Should_Throw_IfUnitsAreNotCompatible()
+    {
+        QuantityUnit unitA = QuantityUnit.Ampere;
+        QuantityUnit unitB = QuantityUnit.Volt;
+
+        Assert.Throws<QuantityNotSameUnitsException>(() =>
         {
-        }
-
-        [Test]
-        public void Should_QuantityHasValueAndUnit()
-        {
-            Quantity.Quantity quantity = new(QuantityUnit.Volt, 5);
-            Assert.AreEqual(quantity.Unit, QuantityUnit.Volt);
-            Assert.AreEqual(quantity.Value, 5);
-        }
-
-        [Test]
-        [TestCase(12, 54)]
-        [TestCase(-5, 5)]
-        [TestCase(87, -90)]
-        [TestCase(-100, 120)]
-        public void Should_ReturnValidValue_OfQuantityAddition(decimal quantityAValue, decimal quantityBValue)
-        {
-            Quantity.Quantity quantityA = new(QuantityUnit.Volt, quantityAValue);
-            Quantity.Quantity quantityB = new (QuantityUnit.Volt, quantityBValue);
-
-            Quantity.Quantity expectedResult = new(QuantityUnit.Volt, quantityAValue + quantityBValue);
-
-            Assert.AreEqual(expectedResult, quantityA + quantityB);
-        }
-
-        [Test]
-        [TestCase(12, 54)]
-        [TestCase(-5, 5)]
-        [TestCase(87, -90)]
-        [TestCase(-100, 120)]
-        public void Should_ReturnValidValue_OfQuantitySubtract(decimal quantityAValue, decimal quantityBValue)
-        {
-            Quantity.Quantity quantityA = new(QuantityUnit.Volt, quantityAValue);
-            Quantity.Quantity quantityB = new(QuantityUnit.Volt, quantityBValue);
-
-            Quantity.Quantity expectedResult = new(QuantityUnit.Volt, quantityAValue - quantityBValue);
-
-            Assert.AreEqual(expectedResult, quantityA - quantityB);
-        }
-
-        [Test]
-        [TestCase(12, 2)]
-        [TestCase(-5, 5)]
-        [TestCase(87, -9)]
-        [TestCase(-100, 1)]
-        public void Should_ReturnValidValue_OfQuantityMultiply(decimal quantityValue, decimal factory)
-        {
-            Quantity.Quantity quantity = new Quantity.Quantity(QuantityUnit.Ohm, quantityValue);
-
-            Quantity.Quantity expectedResult = new(QuantityUnit.Ohm, quantityValue * factory);
-
-            Assert.AreEqual(expectedResult, quantity * factory);
-        }
-
-        [Test]
-        [TestCase(12, 2)]
-        [TestCase(-5, 5)]
-        [TestCase(87, -9)]
-        [TestCase(-100, 1)]
-        public void Should_ReturnValidValue_OfQuantityDivide(decimal quantityValue, decimal factory)
-        {
-            Quantity.Quantity quantity = new Quantity.Quantity(QuantityUnit.Ohm, quantityValue);
-
-            Quantity.Quantity expectedResult = new(QuantityUnit.Ohm, quantityValue / factory);
-
-            Assert.AreEqual(expectedResult, quantity / factory);
-        }
+            var result = unitA + unitB;
+        });
     }
 }

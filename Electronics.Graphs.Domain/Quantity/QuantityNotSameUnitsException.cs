@@ -3,7 +3,7 @@
     /// <summary>
     /// Represent exception during mathematical operations where units cannot be transformed to convertible form
     /// </summary>
-    internal class QuantityNotSameUnitsException : Exception
+    public class QuantityNotSameUnitsException : Exception
     {
         /// <summary>
         /// Default constructor
